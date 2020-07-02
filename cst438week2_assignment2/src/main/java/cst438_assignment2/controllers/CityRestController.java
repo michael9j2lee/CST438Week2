@@ -5,15 +5,23 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import cst438_assignment2.domain.City;
 import cst438_assignment2.domain.CityRepository;
 import cst438_assignment2.domain.CityWeather;
 import cst438_assignment2.weather.WeatherService;
+
+
+
 
 @RestController
 public class CityRestController {
@@ -24,8 +32,7 @@ public class CityRestController {
 	@Autowired
 	WeatherService weatherService;
 	
-//	@GetMapping("/cities/{name}")
-//	public String 
+	
 	
 	@GetMapping("/api/cities/{name}")
 	public ResponseEntity<City> cityInfo(@PathVariable("name") String name ) {
@@ -54,7 +61,7 @@ public class CityRestController {
 		}
 	}
 	
-	@DeleteMapping("/city/{name}")
+	@DeleteMapping("/api/cities/{name}")
 	public ResponseEntity<City> deleteCity(@PathVariable("name") String name ) {
 		
 		// look up city info from database.  Might be multiple cities with same name.
@@ -70,5 +77,5 @@ public class CityRestController {
 			return new ResponseEntity<City>( HttpStatus.NO_CONTENT);
 		}
 	}
-	
 }
+
