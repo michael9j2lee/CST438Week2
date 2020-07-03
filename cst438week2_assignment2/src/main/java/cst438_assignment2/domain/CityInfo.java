@@ -1,10 +1,15 @@
 package cst438_assignment2.domain;
 
+import java.util.Date;
+import java.util.TimeZone;
+
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 
 public class CityInfo {
 	
@@ -15,7 +20,7 @@ public class CityInfo {
 	String district;
 	int population;
 	double temp;
-	long time;
+	String time;
 
 	public CityInfo(City city, TempAndTime tempAndTime) {
 		this.id = city.getID();
@@ -25,7 +30,14 @@ public class CityInfo {
 		this.district = city.getDistrict();
 		this.population = city.getPopulation();
 		this.temp = tempAndTime.getTemp();
-		this.time = tempAndTime.getTime();
+		this.time = convertTime(tempAndTime);
+	}
+	
+	public String convertTime(TempAndTime t) {
+
+		Date date = new Date((long)(t.getTime()+t.getTimezone() )*1000);
+		DateFormat format = new SimpleDateFormat("hh:mm a");
+		return format.format(date);
 	}
 
 	public int getId() {
@@ -84,11 +96,11 @@ public class CityInfo {
 		this.temp = temp;
 	}
 
-	public long getTime() {
+	public String getTime() {
 		return time;
 	}
 
-	public void setTime(long time) {
+	public void setTime(String time) {
 		this.time = time;
 	}
 	
