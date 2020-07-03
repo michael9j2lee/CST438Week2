@@ -9,35 +9,35 @@
 	<table>
 		<tr>
 			<td>ID</td>
-			<td th:text="${city.ID}"></td>
+			<td th:text="${cityInfo.city.ID}"></td>
 		</tr>
 		<tr>
 			<td>Name</td>
-			<td th:text="${city.Name}"></td>
+			<td th:text="${cityInfo.city.Name}"></td>
 		</tr>
 		<tr>
 			<td>Country Code</td>
-			<td th:text="${city.Country.code}"></td>
+			<td th:text="${cityInfo.city.country.code}"></td>
 		</tr>
 		<tr>
 			<td>Country Name</td>
-			<td th:text="${city.Country.name}"></td>
+			<td th:text="${cityInfo.city.country.name}"></td>
 		</tr>
 		<tr>
 			<td>District</td>
-			<td th:text="${city.District}"></td>
+			<td th:text="${cityInfo.city.District}"></td>
 		</tr>
 		<tr>
 			<td>Population</td>
-			<td th:text="${city.Population}"></td>
+			<td th:text="${cityInfo.city.Population}"></td>
 		</tr>
 		<tr>
 			<td>Local Weather</td>
-			<td th:text="${city.Weather.temp}"></td>
+			<td th:text="${cityInfo.tempAndTime.temp}"></td>
 		</tr>
 		<tr>
 			<td>Local Time</td>
-			<td>Time FIX ME</td>
+			<td th:text="${cityInfo.tempAndTime.time}"></td>
 		</tr>
 	</table>
 </body>
