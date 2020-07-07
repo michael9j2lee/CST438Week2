@@ -1,12 +1,15 @@
 package cst438_assignment2.domain;
 
+
 import java.util.List;
 
+import javax.persistence.Table;
+
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.stereotype.Repository;
 
-public interface CityRepository extends JpaRepository<City, Integer> {
-	
+@Repository
+@Table(name="city")
+public interface CityRepository extends JpaRepository<City, Long> {
 	List<City> findByName(String name);
-
 }

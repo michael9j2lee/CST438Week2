@@ -13,7 +13,10 @@ public class Country {
 	private String code;
 	private String name;
 	
-	public Country() { } 
+	public Country() {
+		this.code="";
+		this.name="";
+	} 
 	
 	public Country(String code, String name) {
 		this.code=code;
