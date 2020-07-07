@@ -65,7 +65,7 @@ public class CityRestControllerTest {
 	public void test1() throws Exception {
 
 		Country country = new Country("TestCountryCode","EX");
-		City city = new City(0,"TestCity","TestDistrict",0,country);
+		City city = new City(0,"TestCity","TestDistrict",1,country);
 		TempAndTime t = new TempAndTime(0,1234,4321);
 		List<City> cities = new ArrayList<City>();
 		cities.add(city);
@@ -95,7 +95,7 @@ public class CityRestControllerTest {
 		CityInfo cityInfoResult = jsonCityAttempt.parseObject(response.getContentAsString());
 		
 		CityInfo expectedResult =  new CityInfo(
-				new City( 0 ,"TestCity","TestDistrict", 0,
+				new City( 0 ,"TestCity","TestDistrict", 1,
 						new Country( "TestCountryCode","EX")),
 				new TempAndTime(0,1234,4321)
 						);
@@ -113,7 +113,7 @@ public class CityRestControllerTest {
 	public void test2() throws Exception {
 		Country country = new Country("TestCountryCode","EX");
 		City city = new City(0,"TestCity","TestDistrict",0,country);
-		TempAndTime t = new TempAndTime(0,1234,4321);
+		TempAndTime t = new TempAndTime(0,1,2);
 		List<City> cities = new ArrayList<City>();
 		cities.add(city);
 		
@@ -137,11 +137,53 @@ public class CityRestControllerTest {
 		CityInfo expectedResult =  new CityInfo(
 				new City( 0 ,"City","District", 0,
 						new Country( "CountryCode","FE")),
-				new TempAndTime(0,0,0)
+				new TempAndTime(0,1,2)
 						);
 		
 		assertFalse( cityInfoResult.equals(expectedResult ));
 	}
 	
-	//TODO Test3.  Need to try city with multiple.
+	/*
+	 * Test for cities that has multiple.
+	 */
+	@Test
+	public void test3() throws Exception {
+		Country country = new Country("TestCountryCode","EX");
+		Country country2 = new Country("TestCountryCode2","TW");
+		City city = new City(0,"TestCity","TestDistrict",0,country);
+		City city2 = new City(1,"TestCity","TestDistrict2",1,country);
+		TempAndTime t = new TempAndTime(0,1234,4321);
+		List<City> cities = new ArrayList<City>();
+		cities.add(city);
+		cities.add(city2);
+		
+		given(weatherService.getTempAndTime("TestCity")).willReturn( t );
+		given(cityService.getCityInfo("TestCity")).willReturn( new CityInfo(city, t ));
+		
+		// this is the stub for the CityRepository.  When given input parm of "TestCity", 
+		// it will return a list of cities.
+		given(cityRepository.findByName("TestCity")).willReturn(cities);
+		
+		// perform the test by making simulated HTTP get using URL of "/city/TestCity"
+		MockHttpServletResponse response = mvc.perform(get("/api/cities/TestCity"))
+				.andReturn().getResponse();
+				
+		assertThat(response.getStatus()).isEqualTo(HttpStatus.OK.value());
+		
+		// convert returned data from JSON string format to City object
+		CityInfo cityInfoResult = jsonCityAttempt.parseObject(response.getContentAsString());
+		
+
+		CityInfo expectedResult =  new CityInfo(
+				new City( 0 ,"TestCity","TestDistrict", 0,
+						new Country( "TestCountryCode","EX")),
+				new TempAndTime(0,1234,4321)
+						);
+	
+		
+		// compare actual return data with expected data
+	    // MUST implement .equals( ) method for City class.
+		assertThat(cityInfoResult).isEqualTo(expectedResult);
+	}
+	
 }

@@ -49,8 +49,6 @@ public class CityServiceTest {
 	@MockBean
 	private WeatherService weatherService;
 	
-	//Service to be tested
-	private CityService cs;
 
  // This method is executed before each Test.
 	@BeforeEach
@@ -61,6 +59,7 @@ public class CityServiceTest {
 	/*
 	 * test for a correct answer
 	 */
+
 	@Test
 	public void test1() throws Exception {
 
@@ -75,19 +74,18 @@ public class CityServiceTest {
 		// this is the stub for the CityRepository.  When given input parm of "TestCity", 
 		// it will return a list of cities.
 		given(cityRepository.findByName("TestCity")).willReturn(cities);
-		
+		given(cityService.getCityInfo("TestCity")).willReturn( new CityInfo(city, t ));
 		
 		//check cityinfo
-		
-		assertThat(new CityInfo(
+		CityInfo expectedResult = new CityInfo(
 				new City( 0 ,"TestCity","TestDistrict", 0,
 						new Country( "TestCountryCode","EX")),
-				new TempAndTime(0,1234,4321)
-						).equals( cityService.getCityInfo( "TestCity")) );
+				new TempAndTime(0,1234,4321));
+		
+		assertThat(expectedResult).isEqualTo( cityService.getCityInfo( "TestCity")) ;
 		
 		verify(cityService, times(1)).getCityInfo(ArgumentMatchers.any(String.class));
-		verify(weatherService, times(1)).getTempAndTime(ArgumentMatchers.any(String.class));
-		
+		//verify(weatherService, times(1)).getTempAndTime(ArgumentMatchers.any(String.class));
 	}
 	
 	/*
@@ -115,6 +113,34 @@ public class CityServiceTest {
 		given(cityRepository.findByName("TestCity")).willReturn(cities);
 		
 		assertFalse( ct.equals(cityService.getCityInfo("TestCity")));
+	}
+	/*
+	 * 
+	 * Test for cities that is available in multiple cities.
+	 */
+	@Test
+	public void test3() throws Exception {
+		Country country = new Country("TestCountryCode","TestCountry");
+		City city = new City(0,"TestCity","TestDistrict",0,country);
+		City city2 = new City(1,"TestCity","TestDistrict2",1,country);
+		TempAndTime t = new TempAndTime(0,1234,4321);
+		List<City> cities = new ArrayList<City>();
+		cities.add(city);
+		cities.add(city2);
+		
+		CityInfo expectedResult = new CityInfo(
+				new City( 0 ,"TestCity","TestDistrict", 0,
+						new Country( "TestCountryCode","TestCountry")),
+				new TempAndTime(0,1234,4321));
+
+		given(weatherService.getTempAndTime("TestCity")).willReturn( t );
+		given(cityService.getCityInfo("TestCity")).willReturn( new CityInfo(city, t ));
+		
+		// this is the stub for the CityRepository.  When given input parm of "TestCity", 
+		// it will return a list of cities.
+		given(cityRepository.findByName("TestCity")).willReturn(cities);
+		
+		assertThat( expectedResult).isEqualTo(cityService.getCityInfo( "TestCity"));
 	}
 	
 }
