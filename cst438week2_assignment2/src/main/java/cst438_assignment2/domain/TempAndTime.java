@@ -5,6 +5,13 @@ public class TempAndTime {
 	public long time;
 	public int timezone;
 	
+	
+	public TempAndTime() {
+		this.temp = 0;
+		this.time = 0;
+		this.timezone = 0;
+	}
+	
 	public TempAndTime(double temp, long time, int timezone){
 		this.temp = convertTemp(temp);
 		this.time = time;

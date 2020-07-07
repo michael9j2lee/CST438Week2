@@ -24,6 +24,8 @@ public class CityService {
 			City city = cities.get(0);
 			TempAndTime tempAndTime = weatherService.getTempAndTime(cityName);
 			cityInfo = new CityInfo(city, tempAndTime);
+		} else {
+			cityInfo = new CityInfo(0,"No Results Found for " + cityName,"","","",0,0,"");
 		}
 		return cityInfo;
      }

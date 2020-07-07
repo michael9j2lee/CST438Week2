@@ -34,7 +34,7 @@ public class CityRestController {
 	@GetMapping("/api/cities/{name}")
 	public ResponseEntity<CityInfo> cityInfo(@PathVariable("name") String name ) {
 		CityInfo cityInfo = cityService.getCityInfo(name);
-				
+		
 		return new ResponseEntity<CityInfo>(cityInfo, HttpStatus.OK);
 		
 	}

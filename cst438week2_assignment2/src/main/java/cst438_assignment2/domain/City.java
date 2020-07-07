@@ -20,7 +20,12 @@ public class City {
 	@JoinColumn(name="countrycode", referencedColumnName="code")
 	private Country country;
 	
-	City (){ }
+	City (){ 
+		ID=0;
+		this.name="";
+		this.district="";
+		this.population=0;
+	}
 	
 
 	

@@ -1,9 +1,11 @@
 package cst438_assignment2.domain;
 
 import java.util.Date;
-
+import java.util.Locale;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.TimeZone;
+import java.util.Calendar;;
 
 public class CityInfo {
 	
@@ -16,7 +18,17 @@ public class CityInfo {
 	double temp;
 	String time;
 	
-	public CityInfo() {}
+	public CityInfo() {
+		this.id = 0;
+		this.name="";
+		this.countryCode = "";
+		this.countryName = "";
+		this.district = "";
+		this.population= 0;
+		this.temp = 0;
+		this.time = "0";
+		
+	}
 	
 	public CityInfo(City city, TempAndTime tempAndTime) {
 		this.id = city.getID();
@@ -45,8 +57,18 @@ public class CityInfo {
 
 
 	public String convertTime(TempAndTime t) {
+//		Calendar calendar = Calendar.getInstance();
+//		TimeZone timeZone = calendar.getTimeZone();
+//		long newTime = timeZone.getOffset(t.getTimezone());
+//		
+//		calendar.setTimeZone(timeZone);
+//		TimeZone timeZone2 = TimeZone.getTimeZone("UTC");
+//		System.out.println(calendar.get(Calendar.HOUR_OF_DAY));
+//		System.out.println(t.getTimezone()*60);
+//		System.out.println(newTime);
+//		System.out.println(t.getTime());
 
-		Date date = new Date((long)(t.getTime() - t.getTimezone()  )*1000);
+		Date date = new Date((long)(t.getTime() )*1000 );
 		DateFormat format = new SimpleDateFormat("hh:mm a");
 		return format.format(date);
 	}
